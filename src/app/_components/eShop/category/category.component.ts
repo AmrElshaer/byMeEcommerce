@@ -22,7 +22,7 @@ export class CategoryComponent implements OnInit ,OnDestroy{
 
   ngOnInit(): void {
     this.subscription=this.productService.getCategories(this.companyService.CompanyName)
-    .subscribe(c=>{this.categories=c;console.log(this.categories)});
+    .subscribe(c=>{this.categories=c;});
   }
   openDialog(categoryId:number,productId:number){
     const product= this.categories.find(a=>a.CategoryId==categoryId).Products.find(a=>a.ProductId==productId);

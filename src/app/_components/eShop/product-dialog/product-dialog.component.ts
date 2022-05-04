@@ -13,15 +13,13 @@ import { environment } from 'src/environments/environment';
   templateUrl: './product-dialog.component.html',
   styleUrls: ['../layout/e-shop.component.css','./product-dialog.component.css']
 })
-export class ProductDialogComponent implements OnInit ,OnDestroy{
+export class ProductDialogComponent implements OnInit{
   baseUrl:string=environment.baseImageUrl;
   quantity:number=1;
   $subscribtion:Subscription;
   routLink:string;
   constructor(@Inject(MAT_DIALOG_DATA) public data: Product,private currCompany:CurrentCompanyService,private router:Router,private activeRoute:ActivatedRoute,private authService:AuthenticationService,private currUserService:CurrentCompanyService,private cartService:CartService) { }
-  ngOnDestroy(): void {
-    this.$subscribtion.unsubscribe();
-  }
+ 
   
   ngOnInit(): void {
     this.routLink=this.currCompany.CompanyName+'/'+this.currCompany.CurrentTenant();
@@ -31,10 +29,12 @@ export class ProductDialogComponent implements OnInit ,OnDestroy{
     if(!this.authService.isAuthenticated()){
       this.router.navigateByUrl(this.routLink+'/eshop'+'/login');
     }
+   
    this.$subscribtion= this.cartService.UpsertCartItem(this.InitItemCart())
    .subscribe(a=>{
-     console.log("add sussess");
+    
      this.cartService.UpdateCartStatus();
+     console.log("update cart status");
      this.router.navigateByUrl(this.routLink+'/eshop'+'/cartItems')},err=>console.log(err));
   }
 
